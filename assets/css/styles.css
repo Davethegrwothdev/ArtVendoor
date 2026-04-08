@@ -1,0 +1,562 @@
+/* ========================================
+   Artvendoor - Brand Styles
+   Premium Gallery-Clean Design
+   ======================================== */
+
+/* CSS Custom Properties - Brand Colors */
+:root {
+  /* Primary Colors */
+  --color-terracotta: #B15A36;
+  --color-terracotta-hover: #C46B45;
+  --color-clay: #D57E40;
+  
+  /* Neutral Colors */
+  --color-white: #F5F5F5;
+  --color-white-pure: #FFFFFF;
+  --color-charcoal: #2A2A2A;
+  --color-overlay: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.4) 100%);
+  --color-overlay-mobile: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.45) 100%);
+  
+  /* Typography */
+  --font-heading: 'Gilroy', 'Inter', 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Gilroy', 'Inter', 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-xxl: 5rem;
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 50px;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --shadow-terracotta: 0 8px 24px rgba(177, 90, 54, 0.4);
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* ========================================
+   Reset & Base Styles
+   ======================================== */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-charcoal);
+  background-color: var(--color-white);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color var(--transition-fast);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+/* ========================================
+   Typography
+   ======================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-white);
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
+
+p {
+  margin-bottom: var(--spacing-sm);
+}
+
+/* ========================================
+   Utility Classes
+   ======================================== */
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.text-center { text-align: center; }
+.text-white { color: var(--color-white); }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ========================================
+   Hero Section
+   ======================================== */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  image-rendering: -webkit-optimize-contrast;
+  animation: slowZoom 30s ease-in-out infinite alternate;
+}
+
+@keyframes slowZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--color-overlay);
+  z-index: 1;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem);
+  max-width: 750px;
+  width: 100%;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Logo */
+.hero__logo {
+  margin-bottom: var(--spacing-lg);
+  display: inline-block;
+}
+
+.hero__logo img {
+  height: 60px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+/* Headline */
+.hero__headline {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 800;
+  color: var(--color-white);
+  margin-bottom: clamp(0.75rem, 2vw, 1.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.85);
+}
+
+/* Subheadline */
+.hero__subheadline {
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+  font-weight: 400;
+  color: var(--color-white);
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1.55;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.75);
+}
+
+/* ========================================
+   Email Form
+   ======================================== */
+
+.email-form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.5vw, 1rem);
+  align-items: center;
+  align-self: center;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto clamp(1.5rem, 3vw, 2rem);
+}
+
+.email-form__input {
+  width: 100%;
+  padding: 1.25rem 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: var(--color-white);
+  font-size: 1rem;
+  font-family: var(--font-body);
+  font-weight: 400;
+  transition: all var(--transition-normal);
+  text-align: left;
+}
+
+.email-form__input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.email-form__input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 4px rgba(177, 90, 54, 0.2);
+}
+
+.email-form__button {
+  padding: 1.2rem 3rem;
+  border-radius: var(--radius-full);
+  background: var(--color-terracotta);
+  color: var(--color-white);
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  letter-spacing: 0.5px;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-md);
+  min-width: 220px;
+  animation: subtleShake 4s ease-in-out infinite;
+  align-self: center;
+}
+
+.email-form__button:hover {
+  background: var(--color-terracotta-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-terracotta);
+  animation: none;
+}
+
+.email-form__button:active {
+  transform: translateY(0);
+}
+
+.email-form__button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.email-form__microcopy {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 400;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.65);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ========================================
+   Countdown Timer
+   ======================================== */
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.countdown__item {
+  text-align: center;
+}
+
+.countdown__number {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  min-width: 70px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all var(--transition-normal);
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.8);
+}
+
+.countdown__item:hover .countdown__number {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+.countdown__label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-white);
+  margin-top: var(--spacing-xs);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 400;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* ========================================
+    Social Links
+    ======================================== */
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+.social-links__link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--color-white);
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+  transition: all var(--transition-normal);
+  opacity: 0.8;
+}
+
+.social-links__link:hover {
+  opacity: 1;
+  color: var(--color-clay);
+  transform: translateY(-2px);
+}
+
+.social-links__icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* ========================================
+    Footer
+    ======================================== */
+
+.footer {
+  padding: var(--spacing-lg) 0;
+  background: var(--color-charcoal);
+  text-align: center;
+}
+
+.footer__copyright {
+  color: #A0A0A0;
+  font-size: 0.85rem;
+  font-weight: 300;
+}
+
+.footer__links {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.footer__link {
+  color: #A0A0A0;
+  font-size: 0.85rem;
+  transition: color var(--transition-fast);
+}
+
+.footer__link:hover {
+  color: var(--color-clay);
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.animate-delay-1 { animation-delay: 0.1s; }
+.animate-delay-2 { animation-delay: 0.2s; }
+.animate-delay-3 { animation-delay: 0.3s; }
+.animate-delay-4 { animation-delay: 0.4s; }
+
+/* Subtle shake animation for CTA button */
+@keyframes subtleShake {
+  0%, 90%, 100% {
+    transform: translateX(0);
+  }
+  92% {
+    transform: translateX(-2px) rotate(-0.5deg);
+  }
+  94% {
+    transform: translateX(2px) rotate(0.5deg);
+  }
+  96% {
+    transform: translateX(-1px) rotate(-0.25deg);
+  }
+  98% {
+    transform: translateX(1px) rotate(0.25deg);
+  }
+}
+
+/* ========================================
+   Success Message
+   ======================================== */
+
+.success-message {
+  display: none;
+  padding: var(--spacing-md);
+  background: var(--color-terracotta);
+  color: var(--color-white);
+  border-radius: var(--radius-md);
+  margin-top: var(--spacing-sm);
+  animation: fadeInUp 0.5s ease;
+  font-weight: 500;
+}
+
+.success-message.visible {
+  display: block;
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+@media (max-width: 768px) {
+  .hero__overlay {
+    background: var(--color-overlay-mobile);
+  }
+  
+  .hero__content {
+    margin: var(--spacing-md);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.1);
+    padding: clamp(1.5rem, 3.5vw, 2.5rem) clamp(1.25rem, 2.5vw, 2rem);
+  }
+  
+  .hero__logo img {
+    height: 45px;
+  }
+  
+  .countdown {
+    gap: var(--spacing-sm);
+  }
+  
+  .countdown__number {
+    min-width: 60px;
+    padding: var(--spacing-xs);
+    font-size: 1.5rem;
+  }
+  
+  .email-form {
+    padding: 0 var(--spacing-xs);
+  }
+  
+  .email-form__button {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__content {
+    margin: var(--spacing-sm);
+    padding: clamp(1.25rem, 3vw, 1.75rem) var(--spacing-sm);
+    border-radius: 20px;
+  }
+  
+  .hero__logo img {
+    height: 38px;
+  }
+  
+  .countdown {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .countdown__number {
+    min-width: auto;
+    width: 100%;
+  }
+}
