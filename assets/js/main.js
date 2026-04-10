@@ -161,7 +161,7 @@ class EmailFormHandler {
     return new Promise((resolve) => {
       // Use the JSONP endpoint from the embed code
       const accountId = '2253811';
-      const formId = '184187776467469556';
+      const formId = 'FNg0yF';
       const url = `https://assets.mailerlite.com/jsonp/${accountId}/forms/${formId}/subscribe`;
       
       // Create unique callback
