@@ -156,29 +156,49 @@ class EmailFormHandler {
     }
   }
 
-  // Submit email to MailerLite using universal script
+  // Submit email to MailerLite using JSONP endpoint
   submitToMailerLite(email) {
     return new Promise((resolve) => {
-      // Form ID from MailerLite embed code
-      const formId = 'FNg0yF';
+      // Use the JSONP endpoint from the embed code
+      const accountId = '2253811';
+      const formId = '184187776467469556';
+      const url = `https://assets.mailerlite.com/jsonp/${accountId}/forms/${formId}/subscribe`;
       
-      // Check if MailerLite script is loaded
-      if (typeof ml === 'undefined') {
-        console.error('MailerLite script not loaded');
+      // Create unique callback
+      const callbackName = 'ml_callback_' + Date.now();
+      
+      // Define the callback function
+      window[callbackName] = (response) => {
+        // Clean up
+        delete window[callbackName];
+        if (document.head.contains(script)) {
+          document.head.removeChild(script);
+        }
+        
+        // Check if submission was successful
+        if (response && response.success) {
+          console.log('Email submitted to MailerLite successfully:', email);
+          resolve(true);
+        } else {
+          console.warn('MailerLite submission failed:', response);
+          resolve(false);
+        }
+      };
+      
+      // Create script element for JSONP request
+      const script = document.createElement('script');
+      script.src = `${url}?email=${encodeURIComponent(email)}&callback=${callbackName}`;
+      script.onerror = () => {
+        // Clean up on error
+        delete window[callbackName];
+        if (document.head.contains(script)) {
+          document.head.removeChild(script);
+        }
+        console.error('MailerLite JSONP request failed');
         resolve(false);
-        return;
-      }
+      };
       
-      // Submit using MailerLite's ml() function
-      ml('forms.submit', {
-        formId: formId,
-        email: email
-      });
-      
-      // MailerLite handles the submission asynchronously
-      // We'll consider it a success if no error is thrown
-      console.log('Email submitted to MailerLite:', email);
-      resolve(true);
+      document.head.appendChild(script);
     });
   }
 
