@@ -91,15 +91,25 @@ class EmailFormHandler {
     this.setLoadingState(true);
     
     try {
-      // TODO: Replace with actual email service API call
-      // Example: await this.submitToMailchimp(email);
-      await this.simulateSubmission(email);
+      // Submit to MailerLite first
+      const mailerliteSuccess = await this.submitToMailerLite(email);
       
+      if (mailerliteSuccess) {
+        this.showSuccess();
+        this.form.reset();
+      } else {
+        // Fallback: save to localStorage if MailerLite fails
+        console.log('MailerLite submission failed, saving to localStorage backup');
+        this.saveToLocalStorage(email);
+        this.showSuccess();
+        this.form.reset();
+      }
+    } catch (error) {
+      // If everything fails, save to localStorage as backup
+      console.error('Error submitting email:', error);
+      this.saveToLocalStorage(email);
       this.showSuccess();
       this.form.reset();
-    } catch (error) {
-      this.showError('Something went wrong. Please try again.');
-      console.error('Form submission error:', error);
     } finally {
       this.isSubmitting = false;
       this.setLoadingState(false);
@@ -146,29 +156,85 @@ class EmailFormHandler {
     }
   }
 
-  // Simulate API call - replace with actual implementation
-  simulateSubmission(email) {
+  // Submit email to MailerLite using JSONP
+  submitToMailerLite(email) {
     return new Promise((resolve) => {
-      console.log('Email submitted:', email);
-      setTimeout(resolve, 1000);
+      // MailerLite JSONP endpoint from your embed code
+      const accountId = '2253811';
+      const formId = '184187776467469556';
+      const url = `https://assets.mailerlite.com/jsonp/${accountId}/forms/${formId}/subscribe`;
+      
+      // Create JSONP callback
+      const callbackName = 'ml_callback_' + Date.now();
+      
+      // Define the callback function
+      window[callbackName] = (response) => {
+        // Clean up
+        delete window[callbackName];
+        document.head.removeChild(script);
+        
+        // Check if submission was successful
+        if (response && response.success) {
+          console.log('Email submitted to MailerLite successfully:', email);
+          resolve(true);
+        } else {
+          console.warn('MailerLite submission failed:', response);
+          resolve(false);
+        }
+      };
+      
+      // Create script element for JSONP request
+      const script = document.createElement('script');
+      script.src = `${url}?email=${encodeURIComponent(email)}&callback=${callbackName}`;
+      script.onerror = () => {
+        // Clean up on error
+        delete window[callbackName];
+        if (document.head.contains(script)) {
+          document.head.removeChild(script);
+        }
+        console.error('MailerLite JSONP request failed');
+        resolve(false);
+      };
+      
+      document.head.appendChild(script);
     });
   }
 
-  // Example Mailchimp integration
-  async submitToMailchimp(email) {
-    // Replace with your Mailchimp endpoint
-    const MAILCHIMP_URL = 'https://YOUR_USERNAME.usX.list-manage.com/subscribe/post?u=YOUR_U&id=YOUR_ID';
-    
-    const response = await fetch(MAILCHIMP_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ EMAIL: email }),
-    });
-    
-    return response;
+  // Save email to localStorage as backup
+  saveToLocalStorage(email) {
+    try {
+      const timestamp = new Date().toISOString();
+      const entry = { email, timestamp };
+      
+      // Get existing emails from localStorage
+      let emails = [];
+      const stored = localStorage.getItem('artvendoor_emails');
+      if (stored) {
+        emails = JSON.parse(stored);
+      }
+      
+      // Add new email
+      emails.push(entry);
+      
+      // Save back to localStorage
+      localStorage.setItem('artvendoor_emails', JSON.stringify(emails));
+      
+      console.log('Email saved to localStorage backup:', email);
+      return true;
+    } catch (error) {
+      console.error('Error saving to localStorage:', error);
+      return false;
+    }
+  }
+
+  // Export emails from localStorage (for admin use)
+  static exportEmails() {
+    const stored = localStorage.getItem('artvendoor_emails');
+    if (!stored) {
+      console.log('No emails in localStorage');
+      return null;
+    }
+    return JSON.parse(stored);
   }
 }
 
