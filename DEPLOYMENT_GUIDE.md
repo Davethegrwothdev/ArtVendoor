@@ -123,7 +123,102 @@ Cloudflare Pages will **automatically redeploy** within ~30 seconds.
 
 ---
 
-## Part 4: Email Collection Setup (Optional)
+## Part 4: Push Changes to GitHub (Two Methods)
+
+### Method A: Using VS Code UI (Beginner-Friendly)
+
+#### Step 1: Stage Your Changes
+1. Open VS Code to your project
+2. Click on the **"Source Control"** icon in the left sidebar (or press `Ctrl+Shift+G`)
+3. You'll see a list of changed files under "Changes"
+
+#### Step 2: Stage Individual Files or All Files
+- **Stage all files**: Click the **"+"** button next to "Changes" (hover to see "Stage All Changes")
+- **Stage individual files**: Click the **"+"** next to each file you want to commit
+
+#### Step 3: Write a Commit Message
+1. In the text box at the top that says "Message", type your commit message
+2. Example: "Fix email form - add success message element"
+3. Keep it short but descriptive
+
+#### Step 4: Commit Your Changes
+- Click the **"Commit"** button (checkmark icon) below your message
+- Your changes are now saved locally with a snapshot
+
+#### Step 5: Push to GitHub
+1. Look for the **"Sync Changes"** button in the bottom status bar of VS Code
+   - It shows a cloud icon with an arrow (or "1↑ 1↓")
+2. Click it to push your committed changes to GitHub
+3. Alternatively, after committing, you'll see a prompt to "Sync" - click "OK"
+
+**Success!** Your changes are now live on GitHub and will auto-deploy if using Cloudflare Pages.
+
+---
+
+### Method B: Using Terminal (Command Line)
+
+#### Step 1: Check Status
+```bash
+git status
+```
+This shows you which files have been modified.
+
+#### Step 2: Stage Your Changes
+```bash
+# Stage all files
+git add -A
+
+# Or stage specific files
+git add index.html
+git add assets/js/main.js
+```
+
+#### Step 3: Write a Commit Message
+```bash
+git commit -m "Fix email form - add success message element"
+```
+
+#### Step 4: Push to GitHub
+```bash
+# Push to main branch
+git push origin main
+
+# Or simply (if origin main is already set)
+git push
+```
+
+**Success!** Your changes are now on GitHub.
+
+---
+
+### Quick Reference: Terminal Commands
+
+| Command | What It Does |
+|---------|-------------|
+| `git status` | See what files changed |
+| `git add -A` | Stage all changes |
+| `git commit -m "message"` | Save changes with a message |
+| `git push` | Upload to GitHub |
+| `git pull` | Download latest changes from GitHub |
+| `git log` | See commit history |
+
+---
+
+### Best Practices
+
+1. **Write clear commit messages**: Describe what you changed and why
+   - Good: "Fix email form - add missing success message element"
+   - Bad: "Fixed stuff" or "Updates"
+
+2. **Commit frequently**: Save your work regularly, not just when done
+
+3. **Pull before pushing**: If working on multiple devices, run `git pull` before making changes
+
+4. **Check status**: Always run `git status` before committing to see what you're about to push
+
+---
+
+## Part 5: Email Collection Setup (Optional)
 
 To actually collect emails from the waitlist form:
 
