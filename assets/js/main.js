@@ -91,31 +91,27 @@ class EmailFormHandler {
     this.setLoadingState(true);
     
     try {
-      // Submit to MailerLite first
+      // Submit to hidden MailerLite form
       const mailerliteSuccess = await this.submitToMailerLite(email);
       
       if (mailerliteSuccess) {
         this.showSuccess();
         this.form.reset();
       } else {
-        // Fallback: save to localStorage if MailerLite fails
-        console.log('MailerLite submission failed, saving to localStorage backup');
-        this.saveToLocalStorage(email);
-        this.showSuccess();
-        this.form.reset();
+        // Fallback: MailerLite form might take time or fail
+        console.error('MailerLite submission failed');
+        this.showError('Something went wrong, please try again.');
       }
     } catch (error) {
-      // If everything fails, save to localStorage as backup
       console.error('Error submitting email:', error);
-      this.saveToLocalStorage(email);
-      this.showSuccess();
-      this.form.reset();
+      this.showError('Something went wrong, please try again.');
     } finally {
       this.isSubmitting = false;
       this.setLoadingState(false);
     }
   }
 
+  // Helper to validate email format
   validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -156,87 +152,31 @@ class EmailFormHandler {
     }
   }
 
-  // Submit email to MailerLite using JSONP endpoint
+  // Submit email to MailerLite using hidden embedded form
   submitToMailerLite(email) {
     return new Promise((resolve) => {
-      // Use the JSONP endpoint from the embed code
-      const accountId = '2253811';
-      const formId = 'FNg0yF';
-      const url = `https://assets.mailerlite.com/jsonp/${accountId}/forms/${formId}/subscribe`;
+      // Find the hidden form's input and button
+      const container = document.querySelector('#hidden-mailerlite-form .ml-embedded');
       
-      // Create unique callback
-      const callbackName = 'ml_callback_' + Date.now();
+      // The MailerLite form might take a moment to initialize and render the input/button
+      // We'll try to find them
+      const emailInput = container ? container.querySelector('input[type="email"]') : null;
+      const submitButton = container ? container.querySelector('button[type="submit"]') : null;
       
-      // Define the callback function
-      window[callbackName] = (response) => {
-        // Clean up
-        delete window[callbackName];
-        if (document.head.contains(script)) {
-          document.head.removeChild(script);
-        }
-        
-        // Check if submission was successful
-        if (response && response.success) {
-          console.log('Email submitted to MailerLite successfully:', email);
-          resolve(true);
-        } else {
-          console.warn('MailerLite submission failed:', response);
-          resolve(false);
-        }
-      };
-      
-      // Create script element for JSONP request
-      const script = document.createElement('script');
-      script.src = `${url}?email=${encodeURIComponent(email)}&callback=${callbackName}`;
-      script.onerror = () => {
-        // Clean up on error
-        delete window[callbackName];
-        if (document.head.contains(script)) {
-          document.head.removeChild(script);
-        }
-        console.error('MailerLite JSONP request failed');
+      if (!emailInput || !submitButton) {
+        console.error('MailerLite embedded form not found');
         resolve(false);
-      };
-      
-      document.head.appendChild(script);
-    });
-  }
-
-  // Save email to localStorage as backup
-  saveToLocalStorage(email) {
-    try {
-      const timestamp = new Date().toISOString();
-      const entry = { email, timestamp };
-      
-      // Get existing emails from localStorage
-      let emails = [];
-      const stored = localStorage.getItem('artvendoor_emails');
-      if (stored) {
-        emails = JSON.parse(stored);
+        return;
       }
       
-      // Add new email
-      emails.push(entry);
+      // Populate and click
+      emailInput.value = email;
+      submitButton.click();
       
-      // Save back to localStorage
-      localStorage.setItem('artvendoor_emails', JSON.stringify(emails));
-      
-      console.log('Email saved to localStorage backup:', email);
-      return true;
-    } catch (error) {
-      console.error('Error saving to localStorage:', error);
-      return false;
-    }
-  }
-
-  // Export emails from localStorage (for admin use)
-  static exportEmails() {
-    const stored = localStorage.getItem('artvendoor_emails');
-    if (!stored) {
-      console.log('No emails in localStorage');
-      return null;
-    }
-    return JSON.parse(stored);
+      // Assume success based on button click, MailerLite's own script will handle validation/UI
+      console.log('MailerLite form submitted programmatically');
+      resolve(true);
+    });
   }
 }
 
@@ -315,9 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize email forms
   const forms = document.querySelectorAll('.email-form');
   forms.forEach((form) => {
-    const successMessage = form.nextElementSibling?.classList.contains('success-message')
-      ? form.nextElementSibling
-      : null;
+    // Look for success message in the form's parent container, or after the form's sibling container
+    const successMessage = form.parentNode.querySelector('.success-message');
     const handler = new EmailFormHandler(form, successMessage);
     handler.init();
   });
