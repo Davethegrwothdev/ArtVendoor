@@ -1,0 +1,1526 @@
+
+Subtask completed
+BANEX MALL — COMPREHENSIVE AGENT BUILD PLAN
+Version 1.0 | Prepared from full codebase scan | 2026-04-13
+Root workspace: /home/growd/Projects/barnex mall
+SECTION 1: Project Briefing
+1.1 What Banex Mall Is
+Banex Mall is a shopping centre located in Lekki Phase 1, Lagos, Nigeria (Plot 1100/1101, Adetokunbo Ademola Crescent). It is a lifestyle, retail, dining, and entertainment destination that caters to Lagos's affluent, mobile-first consumer base. It houses fashion, electronics, beauty, dining, cinema, co-working, family entertainment, and event spaces under one roof.
+
+1.2 The Platform Being Built
+A mobile-first digital marketing platform — not a static website, not an e-commerce store. Its job is emotional: answer "What will I enjoy if I come today?", and translate that answer into physical foot traffic.
+
+The platform must be:
+
+Experience-driven, not information-driven
+Visually engaging with smooth animations and interactions
+A discovery engine for stores, dining, events, and promotions
+Optimised for WhatsApp, phone calls, Google Maps as conversion actions
+1.3 Phase 1 MVP Goals & Measurable Success Metrics
+Primary Business Goal: Increase physical mall foot traffic by 20–30% within 6 months of launch.
+
+KPI	Target
+Monthly website visitors	Tracked via GA4
+Bounce rate	< 50%
+Average session duration	> 3 minutes
+Store page views per session	> 2
+Clicks on "Get Directions"	Tracked weekly
+Promotion engagement rate	Tracked weekly
+Event interaction rate	Tracked weekly
+Scroll depth	> 60% on homepage
+Page load time	< 3.5 seconds
+Lighthouse mobile score	> 80
+1.4 What Is Explicitly Out of Scope (Phase 1)
+Full e-commerce marketplace
+Native iOS or Android application
+User accounts / registration / login
+Loyalty and rewards points system
+Online payments of any kind
+Advanced tenant management tools / CMS
+Admin dashboard (CRUD for stores/events/promotions)
+Push notifications
+Indoor navigation / real-time wayfinding
+1.5 Full Tech Stack with Library Versions
+Layer	Technology	Version
+Framework	Next.js (App Router)	15.0.0
+Language	TypeScript	^5.0.0
+UI Library	React	^19.0.0
+Styling	Tailwind CSS	^3.4.0
+Animations	Framer Motion	^11.0.0
+CSS Processing	PostCSS	^8.4.0
+Autoprefixer	autoprefixer	^10.4.0
+Node Types	@types/node	^20.0.0
+React Types	@types/react	^19.0.0
+React DOM Types	@types/react-dom	^19.0.0
+Google Fonts	Via next/font	built-in
+Image Optimization	next/image	built-in
+SEO	next/metadata	built-in
+1.6 Brand Identity
+Primary Color: #2E3192 — Royal Blue (deep navy-blue, used for primary actions, headings, nav)
+
+Accent Color: #F7941D — Amber Orange (CTAs, highlights, badge backgrounds, hover underlines)
+
+Gold Accent: #C9A84C — Warm Gold (luxury sections, editorial headings)
+
+White: #FFFFFF
+
+Near-Black: #0A0A0A
+
+Primary Font: Playfair Display (Google Fonts) — Used for editorial headings, hero headlines, luxury feel
+
+Secondary Font: Inter (Google Fonts) — Used for body text, navigation, UI labels, buttons
+
+Accent Font: Cormorant Garamond (Google Fonts) — Used exclusively in luxury/editorial sections for an elevated tone
+
+Voice & Tone:
+
+Aspirational but accessible — feels premium without being cold
+Experience-first — "Come and enjoy X" not "We offer X"
+Urgent but warm — "Happening now", "Worth the visit", "Limited time"
+Lagos-proud: Reference Lekki, local experiences; do not sound generic Western
+SECTION 2: Current State of the Codebase
+2.1 Files That Exist WITH Content
+File	Status
+banex-mall/package.json	Has Next.js 15, React 19, TypeScript 5 dependencies only
+banex-mall/content/homepage.ts	Minimal stub — 6 lines, hero title/subtitle/CTAs only
+banex-mall/content/stores.ts	Minimal placeholder — 3 categories, 4 stores, no full Store type
+banex-mall/content/dining.ts	Minimal placeholder — 3 categories, 6 restaurants, no full type
+banex-mall/content/events.ts	Minimal placeholder — 1 featured + 3 events, no full Event type
+banex-mall/content/leasing.ts	Minimal placeholder — hero, 3 benefits, 3 spaces, CTA object
+CLINE_MEMORY.md	Exists with project overview and recent changes log
+CLINE_RULES.md	Exists with session rules and safety protocols
+prompts/coding-agent-rules.md	Root-level: 8 bullet rules
+sample-pages/home.html	Full HTML prototype (635 lines) — design reference
+sample-pages/shops.html	Full HTML prototype (489 lines) — design reference
+sample-pages/eat.html	Full HTML prototype (524 lines) — design reference
+sample-pages/contact_us.html	Full HTML prototype (434 lines) — design reference
+docs/PRD.md	Complete PRD (350 lines)
+legacy-assets/copy/copy	Complete copy deck (435 lines)
+2.2 Files That Are Empty or Stub (Must Be Written)
+File	Must be populated with
+banex-mall/next.config.ts	Image domains, remotePatterns, headers
+banex-mall/tailwind.config.ts	Full theme from tailwind-theme.ts
+banex-mall/design-system/colors.ts	Full colour palette
+banex-mall/design-system/typography.ts	Font families, scale
+banex-mall/design-system/spacing.ts	Spacing tokens
+banex-mall/design-system/shadows.ts	Shadow definitions
+banex-mall/design-system/motion.ts	Framer Motion presets
+banex-mall/design-system/tailwind-theme.ts	Combined Tailwind theme object
+banex-mall/types/store.ts	Store, StoreCategory interfaces
+banex-mall/types/event.ts	Event, EventCategory interfaces
+banex-mall/types/promotion.ts	Promotion interface
+banex-mall/lib/constants.ts	SITE_NAME, MALL_ADDRESS, NAV_LINKS, etc.
+banex-mall/lib/helpers.ts	Utility functions
+banex-mall/lib/seo.ts	Metadata factory functions
+banex-mall/lib/analytics.ts	GA4 event wrappers
+banex-mall/app/page.tsx	Homepage
+banex-mall/app/globals.css	Global styles + font imports
+banex-mall/app/stores/page.tsx	Store directory page
+banex-mall/app/dining/page.tsx	Dining guide page
+banex-mall/app/events/page.tsx	Events page
+banex-mall/app/leasing/page.tsx	Leasing enquiry page
+banex-mall/app/luxury/page.tsx	Luxury experience page
+banex-mall/app/family/page.tsx	Family & Kids page
+banex-mall/app/contact/page.tsx	Contact page
+banex-mall/styles/animations.css	Keyframe animations
+banex-mall/styles/utilities.css	Custom utility classes
+banex-mall/prompts/coding-agent-rules.md	Copy from root prompts/
+banex-mall/prompts/cards-ui.md	Card component design spec
+banex-mall/prompts/homepage-family.md	Family section spec
+banex-mall/prompts/homepage-luxury.md	Luxury section spec
+banex-mall/prompts/motion-rules.md	Animation rules
+2.3 Component Directories That Exist But Have No Files
+All of the following directories exist but contain zero files:
+
+banex-mall/components/animations/    ← empty
+banex-mall/components/cards/         ← empty
+banex-mall/components/layout/        ← empty
+banex-mall/components/map/           ← empty
+banex-mall/components/navigation/    ← empty
+banex-mall/components/sections/      ← empty
+banex-mall/components/shared/        ← empty
+
+2.4 Critical Blockers — Must Resolve Before Any UI Work
+tailwindcss is not in package.json — Tailwind CSS will not work at all
+postcss is not in package.json — Tailwind CSS PostCSS integration will fail
+autoprefixer is not in package.json — CSS vendor prefixes will not be added
+framer-motion is not in package.json — All animation imports will throw errors
+tailwind.config.ts is empty — Even after install, Tailwind won't find content paths
+next.config.ts is empty — Next.js will use defaults; remote image domains won't load
+2.5 Assets Available in legacy-assets/images/
+banexmall.3-768x576.jpeg           ← mall exterior shot
+banexmall.4.jpeg                   ← interior view
+banexmall.5.jpeg                   ← interior view
+banexmall.6.jpeg                   ← interior view
+cropped-BANEX_MALL_-_LOGO-removebg-preview-32x32.png    ← favicon
+cropped-BANEX_MALL_-_LOGO-removebg-preview-180x180.png  ← apple touch icon
+cropped-BANEX_MALL_-_LOGO-removebg-preview-192x192.png  ← PWA icon
+IMG_0926-scaled.jpg                ← store interior
+IMG_0935-scaled.jpg                ← store interior
+IMG_0955-2-scaled.jpg              ← dining area
+IMG_0955-scaled.jpg                ← dining area
+WhatsApp-Image-2023-02-13-at-5.35.49-PM-1.jpeg
+WhatsApp-Image-2023-02-14-at-1.49.52-PM-2.jpeg
+WhatsApp-Image-2023-02-14-at-1.49.53-PM-1.jpeg
+WhatsApp-Image-2023-02-27-at-4.10.29-PM.jpeg          ← promo (use this)
+WhatsApp-Image-2023-02-27-at-4.10.29-PM-225x300.jpeg  ← skip — Next.js resizes
+WhatsApp-Image-2023-02-27-at-4.10.29-PM-768x1024.jpeg ← skip — Next.js resizes
+WhatsApp-Image-2024-12-11-at-1.04.05-PM.jpeg          ← use
+WhatsApp-Image-2024-12-11-at-1.04.05-PM-1.jpeg        ← use
+WhatsApp-Image-2024-12-11-at-1.04.05-PM-4-300x176.jpeg← skip (sized variant)
+WhatsApp-Image-2024-12-11-at-1.04.05-PM-1-300x300.jpeg← skip (sized variant)
+WhatsApp-Image-2024-12-11-at-1.04.05-PM-300x300.jpeg  ← skip (sized variant)
+WhatsApp-Image-2024-12-11-at-1.04.06-PM.jpeg          ← use
+
+SECTION 3: Repository & Directory Structure
+3.1 Full Annotated Directory Tree
+/home/growd/Projects/barnex mall/          ← workspace root (note: "barnex" in path, not "banex")
+│
+├── CLINE_MEMORY.md                        ← Agent session memory (READ FIRST every session)
+├── CLINE_RULES.md                         ← Agent behaviour rules
+├── prompr                                 ← Unknown file (do not modify)
+│
+├── banex-mall/                            ← THE NEXT.JS APPLICATION ROOT
+│   ├── package.json                       ← npm manifest (missing 3 critical deps)
+│   ├── package-lock.json                  ← Lock file (regenerated on install)
+│   ├── next.config.ts                     ← Next.js config (empty — must write)
+│   ├── tailwind.config.ts                 ← Tailwind config (empty — must write)
+│   │
+│   ├── app/                               ← Next.js App Router
+│   │   ├── globals.css                    ← Global CSS (empty — must write)
+│   │   ├── page.tsx                       ← Homepage route / (empty — must write)
+│   │   ├── layout.tsx                     ← Root layout (DOES NOT EXIST — must create)
+│   │   ├── contact/page.tsx               ← /contact route (empty — must write)
+│   │   ├── dining/page.tsx                ← /dining route (empty — must write)
+│   │   ├── events/page.tsx                ← /events route (empty — must write)
+│   │   ├── family/page.tsx                ← /family route (empty — must write)
+│   │   ├── leasing/page.tsx               ← /leasing route (empty — must write)
+│   │   ├── luxury/page.tsx                ← /luxury route (empty — must write)
+│   │   └── stores/page.tsx                ← /stores route (empty — must write)
+│   │
+│   ├── components/                        ← All React components
+│   │   ├── animations/                    ← Framer Motion wrapper primitives
+│   │   ├── cards/                         ← Card components (store, dining, event, leasing)
+│   │   ├── layout/                        ← Layout components (Header, Footer, MobileMenu)
+│   │   ├── map/                           ← Mall map component
+│   │   ├── navigation/                    ← NavBar, NavLink
+│   │   ├── sections/                      ← Page section components
+│   │   └── shared/                        ← Shared UI primitives (Button, Badge, etc.)
+│   │
+│   ├── content/                           ← Static data layer (all placeholder — expand)
+│   │   ├── homepage.ts                    ← Hero, trending, experience tiles copy
+│   │   ├── stores.ts                      ← Store listings with categories
+│   │   ├── dining.ts                      ← Restaurant/dining listings
+│   │   ├── events.ts                      ← Event listings
+│   │   └── leasing.ts                     ← Leasing info, benefits, spaces
+│   │
+│   ├── design-system/                     ← Design tokens (all empty — must write)
+│   │   ├── colors.ts
+│   │   ├── typography.ts
+│   │   ├── spacing.ts
+│   │   ├── shadows.ts
+│   │   ├── motion.ts
+│   │   └── tailwind-theme.ts
+│   │
+│   ├── lib/                               ← Utility functions (all empty — must write)
+│   │   ├── constants.ts
+│   │   ├── helpers.ts
+│   │   ├── seo.ts
+│   │   └── analytics.ts
+│   │
+│   ├── prompts/                           ← LLM reference prompts (all empty — low priority)
+│   │   ├── coding-agent-rules.md
+│   │   ├── cards-ui.md
+│   │   ├── homepage-family.md
+│   │   ├── homepage-luxury.md
+│   │   └── motion-rules.md
+│   │
+│   ├── public/                            ← Static assets served at /
+│   │   ├── icons/                         ← favicon, apple-touch-icon, PWA icon
+│   │   ├── images/
+│   │   │   ├── hero/                      ← Hero section images
+│   │   │   ├── stores/                    ← Store images
+│   │   │   ├── dining/                    ← Dining images
+│   │   │   ├── events/                    ← Event images
+│   │   │   └── maps/                      ← Mall map images
+│   │   └── videos/                        ← Video assets (if needed)
+│   │
+│   ├── styles/                            ← Additional CSS (all empty — must write)
+│   │   ├── animations.css
+│   │   └── utilities.css
+│   │
+│   └── types/                             ← TypeScript interfaces (all empty — must write)
+│       ├── store.ts
+│       ├── event.ts
+│       └── promotion.ts
+│
+├── docs/
+│   ├── PRD.md                             ← Complete Product Requirements Document
+│   └── design-brief-output.md            ← Placeholder only (empty)
+│
+├── legacy-assets/
+│   ├── copy/copy                          ← Complete copy deck for all pages
+│   └── images/                           ← 16+ real mall photos (migrate to public/)
+│
+├── prompts/
+│   └── coding-agent-rules.md              ← 8-rule coding guide
+│
+└── sample-pages/                          ← HTML design prototypes (reference only)
+    ├── home.html                          ← Homepage prototype (635 lines)
+    ├── shops.html                         ← Shops page prototype (489 lines)
+    ├── eat.html                           ← Dining page prototype (524 lines)
+    ├── contact_us.html                    ← Contact page prototype (434 lines)
+    └── output/                            ← Design token extraction output from competitor sites
+        ├── bluewater.co.uk/
+        ├── lakeside-shopping.com/
+        └── westfield.com/
+
+
+3.2 File Naming Conventions
+Type	Convention	Example
+React components	PascalCase .tsx	StoreCard.tsx
+Pages (App Router)	page.tsx	app/stores/page.tsx
+Root layout	layout.tsx	app/layout.tsx
+TypeScript types	camelCase .ts	store.ts
+Design tokens	camelCase .ts	colors.ts
+Lib utilities	camelCase .ts	helpers.ts
+CSS files	kebab-case .css	animations.css
+Image files (public)	kebab-case	mall-exterior-01.jpg
+Directories	kebab-case	components/shared/
+3.3 Import Path Conventions
+The project uses @/ as an alias for the banex-mall/ root. All component imports should use:
+
+import { Button } from '@/components/shared/Button'
+import { colors } from '@/design-system/colors'
+import { SITE_NAME } from '@/lib/constants'
+import type { Store } from '@/types/store'
+import { storesData } from '@/content/stores'
+
+This alias must be configured in next.config.ts and a tsconfig.json paths entry. The tsconfig.json likely has the default @/* path from create-next-app (check before creating).
+
+3.4 Content Layer Responsibilities
+File	Owns
+content/homepage.ts	Hero copy, rotating taglines, "Why Visit Today" section, trending labels, experience tiles (SHOP/EAT/PLAY), footer CTA copy
+content/stores.ts	Full Store[] array; all store properties; featured stores list
+content/dining.ts	Full dining/restaurant array with cuisines, floors, hours, images
+content/events.ts	Full Event[] array; featured event; event categories
+content/leasing.ts	Hero copy, benefits array, available spaces, form CTA, contact details
+SECTION 4: Session Rules & Memory Protocol
+4.1 How the Agent Must Use CLINE_RULES.md and CLINE_MEMORY.md
+At the start of every new session:
+
+Read CLINE_RULES.md — understand the operating rules
+Read CLINE_MEMORY.md — understand where the project is, what was done, what's next
+Never assume the project state from previous messages — always read memory
+CLINE_MEMORY.md structure to maintain:
+
+# Project Overview
+# Codebase Index (Structured)
+# Recent Changes Log
+# Current Task Status
+# Cross-Session Notes
+
+4.2 When to Update Memory
+Update CLINE_MEMORY.md after every significant operation:
+
+After installing dependencies
+After completing a Phase (A, B, C, D, E, F, G, H)
+After completing a group of 3+ files
+After any architectural decision
+When a blocker is discovered
+When a blocker is resolved
+Format for each log entry:
+
+- `[ISO timestamp]` – [What was done]. Files: [list]. Decisions: [any].
+
+4.3 Safety Rules
+Never use rm -rf or recursive destructive commands without explicit user confirmation
+Never delete or overwrite CLINE_MEMORY.md or CLINE_RULES.md
+Never modify files outside banex-mall/ without explicit permission
+Never commit or push to git without explicit instruction
+Before overwriting any file that already has content, read it first
+If a TypeScript error appears, debug it before proceeding to the next task
+4.4 Recommended Mode per Task Type
+Task Type	Recommended Mode
+Writing component code, pages, CSS, TypeScript	Code mode
+Planning architecture, deciding structure	Architect mode
+Explaining code, answering questions, reading files for context	Ask mode
+Debugging TypeScript errors, build failures, runtime errors	Debug mode
+Multi-phase coordination	Orchestrator mode
+SECTION 5: Step-by-Step Build Order
+PHASE A — Foundation (must be completed before any UI work)
+Task A.1 — Install Missing npm Dependencies
+Files to modify: banex-mall/package.json
+
+Command to run (from workspace root):
+
+cd "banex-mall" && npm install tailwindcss@^3.4.0 postcss@^8.4.0 autoprefixer@^10.4.0 framer-motion@^11.0.0
+
+Expected result: package.json devDependencies now includes tailwindcss, postcss, autoprefixer; dependencies includes framer-motion.
+
+Verification: Run cat banex-mall/package.json and confirm all 4 packages appear.
+
+Memory update: Log "Phase A.1 complete — 4 missing npm dependencies installed."
+
+Task A.2 — Populate design-system/colors.ts
+File: banex-mall/design-system/colors.ts
+
+Write this exact content:
+
+export const colors = {
+  brand: {
+    primary: '#2E3192',
+    primaryLight: '#4A4DB5',
+    primaryDark: '#1E2170',
+    accent: '#F7941D',
+    accentLight: '#F9A94A',
+    accentDark: '#D97A0A',
+    gold: '#C9A84C',
+    goldLight: '#E0C270',
+    goldDark: '#A8882E',
+  },
+  neutral: {
+    white: '#FFFFFF',
+    50: '#F9F9FB',
+    100: '#F3F3F5',
+    200: '#E8E8EA',
+    300: '#D9DADC',
+    400: '#C7C5D1',
+    500: '#777681',
+    600: '#464650',
+    700: '#2F3132',
+    800: '#1A1C1D',
+    900: '#0D0D0F',
+    black: '#0A0A0A',
+  },
+  semantic: {
+    success: '#16A34A',
+    successLight: '#DCFCE7',
+    warning: '#D97706',
+    warningLight: '#FEF9C3',
+    error: '#BA1A1A',
+    errorLight: '#FFDAD6',
+    info: '#2563EB',
+    infoLight: '#DBEAFE',
+  },
+} as const
+
+export type ColorToken = typeof colors
+
+
+Verification: TypeScript should import this without errors.
+
+Task A.3 — Populate design-system/typography.ts
+File: banex-mall/design-system/typography.ts
+
+Write this exact content:
+
+export const typography = {
+  fontFamily: {
+    heading: ['Playfair Display', 'Georgia', 'serif'],
+    body: ['Inter', 'system-ui', 'sans-serif'],
+    accent: ['Cormorant Garamond', 'Georgia', 'serif'],
+  },
+  fontSize: {
+    xs: ['0.75rem', { lineHeight: '1rem' }],
+    sm: ['0.875rem', { lineHeight: '1.25rem' }],
+    base: ['1rem', { lineHeight: '1.5rem' }],
+    lg: ['1.125rem', { lineHeight: '1.75rem' }],
+    xl: ['1.25rem', { lineHeight: '1.75rem' }],
+    '2xl': ['1.5rem', { lineHeight: '2rem' }],
+    '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+    '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+    '5xl': ['3rem', { lineHeight: '1.1' }],
+    '6xl': ['3.75rem', { lineHeight: '1' }],
+    '7xl': ['4.5rem', { lineHeight: '1' }],
+    '8xl': ['6rem', { lineHeight: '1' }],
+    '9xl': ['8rem', { lineHeight: '1' }],
+  },
+  fontWeight: {
+    light: '300',
+    normal: '400',
+    medium: '500',
+    semibold: '600',
+    bold: '700',
+    extrabold: '800',
+    black: '900',
+  },
+  lineHeight: {
+    none: '1',
+    tight: '1.1',
+    snug: '1.375',
+    normal: '1.5',
+    relaxed: '1.625',
+    loose: '2',
+  },
+  letterSpacing: {
+    tighter: '-0.05em',
+    tight: '-0.025em',
+    normal: '0em',
+    wide: '0.025em',
+    wider: '0.05em',
+    widest: '0.1em',
+    superwide: '0.2em',
+    ultrawide: '0.3em',
+  },
+} as const
+
+
+Task A.4 — Populate design-system/spacing.ts
+File: banex-mall/design-system/spacing.ts
+
+export const spacing = {
+  // Section padding (used in py-section, etc.)
+  section: {
+    xs: '2rem',      // 32px
+    sm: '3rem',      // 48px
+    md: '4rem',      // 64px
+    lg: '6rem',      // 96px
+    xl: '8rem',      // 128px
+    '2xl': '10rem',  // 160px
+  },
+  // Container padding
+  container: {
+    mobile: '1.5rem',  // 24px
+    tablet: '3rem',    // 48px
+    desktop: '5rem',   // 80px
+    maxWidth: '1440px',
+  },
+  // Card inner padding
+  card: {
+    sm: '1.5rem',
+    md: '2rem',
+    lg: '3rem',
+  },
+  // Gap between grid items
+  grid: {
+    sm: '1rem',
+    md: '1.5rem',
+    lg: '2rem',
+    xl: '3rem',
+  },
+} as const
+
+Task A.5 — Populate design-system/shadows.ts
+File: banex-mall/design-system/shadows.ts
+
+export const shadows = {
+  card: '0 4px 24px 0 rgba(46, 49, 146, 0.06)',
+  cardHover: '0 16px 48px 0 rgba(46, 49, 146, 0.14)',
+  elevated: '0 8px 32px 0 rgba(46, 49, 146, 0.10)',
+  floating: '0 20px 60px 0 rgba(46, 49, 146, 0.18)',
+  glow: {
+    primary: '0 0 32px 0 rgba(46, 49, 146, 0.3)',
+    accent: '0 0 32px 0 rgba(247, 148, 29, 0.3)',
+    gold: '0 0 24px 0 rgba(201, 168, 76, 0.4)',
+  },
+  nav: '0 4px 32px 0 rgba(46, 49, 146, 0.05)',
+  inset: 'inset 0 2px 8px 0 rgba(46, 49, 146, 0.08)',
+  // Tailwind-compatible string versions
+  tailwind: {
+    card: '0 4px 24px 0 rgba(46,49,146,0.06)',
+    cardHover: '0 16px 48px 0 rgba(46,49,146,0.14)',
+    elevated: '0 8px 32px 0 rgba(46,49,146,0.10)',
+  },
+} as const
+
+Task A.6 — Populate design-system/motion.ts
+File: banex-mall/design-system/motion.ts
+
+import type { Variants, Transition } from 'framer-motion'
+
+export const duration = {
+  instant: 0.1,
+  fast: 0.15,
+  normal: 0.3,
+  slow: 0.6,
+  verySlow: 1.0,
+  hero: 1.2,
+} as const
+
+export const ease = {
+  standard: [0.4, 0.0, 0.2, 1.0] as const,
+  enter: [0.0, 0.0, 0.2, 1.0] as const,
+  exit: [0.4, 0.0, 1.0, 1.0] as const,
+  emphasized: [0.2, 0.0, 0.0, 1.0] as const,
+}
+
+export const transitions: Record<string, Transition> = {
+  default: {
+    duration: duration.normal,
+    ease: ease.standard,
+  },
+  spring: {
+    type: 'spring',
+    stiffness: 300,
+    damping: 30,
+  },
+  smooth: {
+    duration: duration.slow,
+    ease: ease.enter,
+  },
+  hero: {
+    duration: duration.hero,
+    ease: ease.enter,
+  },
+  snappy: {
+    type: 'spring',
+    stiffness: 500,
+    damping: 40,
+  },
+}
+
+export const variants = {
+  fadeIn: {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: transitions.default },
+  } satisfies Variants,
+
+  fadeInUp: {
+    hidden: { opacity: 0, y: 32 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: duration.slow, ease: ease.enter },
+    },
+  } satisfies Variants,
+
+  fadeInDown: {
+    hidden: { opacity: 0, y: -32 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: duration.slow, ease: ease.enter },
+    },
+  } satisfies Variants,
+
+  slideInLeft: {
+    hidden: { opacity: 0, x: -48 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: duration.slow, ease: ease.enter },
+    },
+  } satisfies Variants,
+
+  slideInRight: {
+    hidden: { opacity: 0, x: 48 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: duration.slow, ease: ease.enter },
+    },
+  } satisfies Variants,
+
+  scaleIn: {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: transitions.spring,
+    },
+  } satisfies Variants,
+
+  staggerContainer: {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.1,
+      },
+    },
+  } satisfies Variants,
+
+  staggerItem: {
+    hidden: { opacity: 0, y: 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: duration.normal, ease: ease.enter },
+    },
+  } satisfies Variants,
+
+  heroText: {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: transitions.hero,
+    },
+  } satisfies Variants,
+}
+
+
+Task A.7 — Populate design-system/tailwind-theme.ts and wire into tailwind.config.ts
+File 1: banex-mall/design-system/tailwind-theme.ts
+
+import { colors } from './colors'
+import { typography } from './typography'
+import { shadows } from './shadows'
+
+export const tailwindTheme = {
+  extend: {
+    colors: {
+      // Brand
+      primary: colors.brand.primary,
+      'primary-light': colors.brand.primaryLight,
+      'primary-dark': colors.brand.primaryDark,
+      accent: colors.brand.accent,
+      'accent-light': colors.brand.accentLight,
+      'accent-dark': colors.brand.accentDark,
+      gold: colors.brand.gold,
+      'gold-light': colors.brand.goldLight,
+      // Neutrals (mapped to Tailwind gray slots for convenience)
+      surface: colors.neutral[50],
+      'surface-low': colors.neutral[100],
+      'surface-high': colors.neutral[200],
+      'on-surface': colors.neutral[800],
+      'on-surface-variant': colors.neutral[600],
+      // Semantic
+      success: colors.semantic.success,
+      warning: colors.semantic.warning,
+      danger: colors.semantic.error,
+    },
+    fontFamily: {
+      heading: typography.fontFamily.heading,
+      body: typography.fontFamily.body,
+      accent: typography.fontFamily.accent,
+    },
+    boxShadow: {
+      card: shadows.tailwind.card,
+      'card-hover': shadows.tailwind.cardHover,
+      elevated: shadows.tailwind.elevated,
+    },
+    borderRadius: {
+      DEFAULT: '1rem',
+      lg: '1.5rem',
+      xl: '2rem',
+      '2xl': '3rem',
+      '3xl': '4rem',
+      full: '9999px',
+    },
+    animation: {
+      marquee: 'marquee 28s linear infinite',
+      'fade-in': 'fadeIn 0.6s ease forwards',
+      'slide-up': 'slideUp 0.6s ease forwards',
+    },
+    keyframes: {
+      marquee: {
+        '0%': { transform: 'translateX(0%)' },
+        '100%': { transform: 'translateX(-50%)' },
+      },
+      fadeIn: {
+        '0%': { opacity: '0' },
+        '100%': { opacity: '1' },
+      },
+      slideUp: {
+        '0%': { opacity: '0', transform: 'translateY(32px)' },
+        '100%': { opacity: '1', transform: 'translateY(0)' },
+      },
+    },
+    maxWidth: {
+      container: '1440px',
+    },
+    screens: {
+      xs: '375px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1440px',
+    },
+  },
+} as const
+
+
+File 2: banex-mall/tailwind.config.ts
+
+import type { Config } from 'tailwindcss'
+import { tailwindTheme } from './design-system/tailwind-theme'
+
+const config: Config = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './sections/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: tailwindTheme,
+  plugins: [],
+}
+
+export default config
+
+Verification: Run cd banex-mall && npx tailwindcss --help — should not error.
+
+Task A.8 — Populate types/store.ts
+File: banex-mall/types/store.ts
+
+export type StoreCategory =
+  | 'fashion'
+  | 'beauty'
+  | 'food'
+  | 'electronics'
+  | 'home'
+  | 'entertainment'
+  | 'services'
+  | 'luxury'
+  | 'health'
+  | 'kids'
+  | 'workspaces'
+
+export interface Store {
+  id: string
+  name: string
+  slug: string
+  category: StoreCategory
+  description: string
+  shortDescription: string
+  floor: number
+  unit: string
+  logo?: string
+  coverImage?: string
+  gallery?: string[]
+  openingHours: string
+  closingHours?: string
+  isOpenNow?: boolean
+  phone?: string
+  website?: string
+  whatsapp?: string
+  isFeatured?: boolean
+  isNew?: boolean
+  isLuxury?: boolean
+  tags?: string[]
+  floorLabel?: string // e.g. "Ground Floor", "First Floor"
+}
+
+export interface StoreCategory_ {
+  id: StoreCategory
+  name: string
+  icon: string
+  count?: number
+}
+
+
+Task A.9 — Populate types/event.ts
+File: banex-mall/types/event.ts
+
+export type EventCategory =
+  | 'fashion'
+  | 'family'
+  | 'food'
+  | 'music'
+  | 'art'
+  | 'kids'
+  | 'business'
+  | 'sports'
+  | 'seasonal'
+  | 'promotion'
+
+export interface MallEvent {
+  id: string
+  title: string
+  slug: string
+  description: string
+  shortDescription?: string
+  date: string        // ISO date string e.g. "2026-05-01"
+  endDate?: string    // ISO date string for multi-day events
+  time: string        // e.g. "3:00 PM - 6:00 PM"
+  venue: string       // e.g. "Main Atrium", "Kids Zone"
+  coverImage?: string
+  gallery?: string[]
+  category: EventCategory
+  isFeatured?: boolean
+  isHappeningNow?: boolean
+  isFree?: boolean
+  ticketUrl?: string
+  whatsappShare?: string
+  tags?: string[]
+  organizer?: string
+}
+
+
+Task A.10 — Populate types/promotion.ts
+File: banex-mall/types/promotion.ts
+
+import type { Store } from './store'
+
+export type PromotionCategory =
+  | 'discount'
+  | 'bundle'
+  | 'flash-sale'
+  | 'seasonal'
+  | 'dining'
+  | 'loyalty'
+
+export interface Promotion {
+  id: string
+  title: string
+  slug: string
+  store?: Pick<Store, 'id' | 'name' | 'slug' | 'logo'>
+  storeId?: string
+  discount?: string        // e.g. "20% off", "Buy 2 Get 1 Free"
+  description: string
+  shortDescription?: string
+  validFrom: string        // ISO date string
+  validTo: string          // ISO date string
+  image?: string
+  isFeatured?: boolean
+  isExpired?: boolean
+  category: PromotionCategory
+  terms?: string
+  ctaLabel?: string
+  ctaUrl?: string
+}
+
+Task A.11 — Populate lib/constants.ts
+File: banex-mall/lib/constants.ts
+
+export const SITE_NAME = 'Banex Mall'
+export const SITE_URL = 'https://banexmall.com'
+export const SITE_TAGLINE = 'Discover What\'s Happening at Banex Mall Today'
+export const SITE_DESCRIPTION =
+  'From shopping and dining to family fun, events, cinema, and workspaces — Banex Mall brings Lekki\'s best experiences together in one vibrant destination.'
+
+export const MALL_ADDRESS =
+  'Plot 1100/1101, Adetokunbo Ademola Crescent, Lekki Phase 1, Lagos, Nigeria'
+export const MALL_PHONE = '+234 700 BANEX MALL'
+export const MALL_EMAIL = 'info@banexmall.com'
+export const LEASING_EMAIL = 'leasing@banexmall.com'
+export const PRESS_EMAIL = 'press@banexmall.com'
+
+export const WHATSAPP_NUMBER = '+2347000000000' // Replace with real number
+export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, '')}`
+
+export const GOOGLE_MAPS_URL =
+  'https://www.google.com/maps/place/Banex+Mall,+Lekki+Phase+1,+Lagos'
+export const GOOGLE_MAPS_EMBED_URL =
+  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.952912260219!2d3.4417!3d6.4281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae68280c1%3A0xdc9e87a367c3d9cb!2sBanex+Mall!5e0!3m2!1sen!2sng!4v1620000000000'
+
+export const OPENING_HOURS = {
+  weekdays: { open: '10:00 AM', close: '9:00 PM', label: 'Monday – Friday' },
+  saturday: { open: '10:00 AM', close: '10:00 PM', label: 'Saturday' },
+  sunday: { open: '12:00 PM', close: '8:00 PM', label: 'Sunday' },
+}
+
+export const SOCIAL_LINKS = {
+  instagram: 'https://instagram.com/banexmall',
+  facebook: 'https://facebook.com/banexmall',
+  twitter: 'https://twitter.com/banexmall',
+}
+
+export const NAV_LINKS = [
+  {
+    label: 'Shop',
+    href: '/stores',
+    description: 'Browse all stores and brands',
+  },
+  {
+    label: 'Eat',
+    href: '/dining',
+    description: 'Restaurants, cafes, and food court',
+  },
+  {
+    label: "What's On",
+    href: '/events',
+    description: 'Events, promotions, and deals',
+  },
+  {
+    label: 'Experiences',
+    href: '/luxury',
+    description: 'Luxury experiences and family fun',
+  },
+  {
+    label: 'Leasing',
+    href: '/leasing',
+    description: 'Grow your brand at Banex Mall',
+  },
+  {
+    label: 'Contact',
+    href: '/contact',
+    description: 'Get in touch with us',
+  },
+] as const
+
+export const HERO_ROTATING_LINES = [
+  'Shop your favourite brands',
+  'Discover what\'s trending today',
+  'Eat, play, relax, repeat',
+  'Events your whole family will love',
+  'Lekki\'s favourite lifestyle destination',
+]
+
+export const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX' // Replace with real GA4 ID
+
+
+Task A.12 — Populate lib/helpers.ts
+File: banex-mall/lib/helpers.ts
+
+import type { Store } from '@/types/store'
+import { WHATSAPP_URL } from './constants'
+
+/**
+ * Format a date in Nigerian locale
+ * e.g. "Sunday, 20 April 2026"
+ */
+export function formatDate(date: Date | string): string {
+  const d = typeof date === 'string' ? new Date(date) : date
+  return d.toLocaleDateString('en-NG', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+}
+
+/**
+ * Format a short date e.g. "20 Apr 2026"
+ */
+export function formatShortDate(date: Date | string): string {
+  const d = typeof date === 'string' ? new Date(date) : date
+  return d.toLocaleDateString('en-NG', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  })
+}
+
+/**
+ * Format time string for display — passthrough (already formatted in data)
+ */
+export function formatTime(time: string): string {
+  return time
+}
+
+/**
+ * Generate a URL-safe slug from a name
+ */
+export function generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim()
+}
+
+/**
+ * Truncate text to maxLength with ellipsis
+ */
+export function truncateText(text: string, maxLength: number): string {
+  if (text.length <= maxLength) return text
+  return text.slice(0, maxLength).trim() + '…'
+}
+
+/**
+ * Filter an array of items by category
+ */
+export function filterByCategory<T>(
+  items: T[],
+  category: string,
+  key: keyof T
+): T[] {
+  if (category === 'all') return items
+  return items.filter((item) => item[key] === category)
+}
+
+/**
+ * Group items by a key
+ */
+export function groupByCategory<T>(
+  items: T[],
+  key: keyof T
+): Record<string, T[]> {
+  return items.reduce(
+    (acc, item) => {
+      const group = String(item[key])
+      if (!acc[group]) acc[group] = []
+      acc[group].push(item)
+      return acc
+    },
+    {} as Record<string, T[]>
+  )
+}
+
+/**
+ * Build a WhatsApp link with a pre-filled message
+ */
+export function getWhatsAppLink(message: string): string {
+  const encoded = encodeURIComponent(message)
+  return `${WHATSAPP_URL}?text=${encoded}`
+}
+
+/**
+ * Get stores on a specific floor
+ */
+export function getStoresByFloor(stores: Store[], floor: number): Store[] {
+  return stores.filter((store) => store.floor === floor)
+}
+
+/**
+ * Get featured items from any array with an isFeatured boolean
+ */
+export function getFeaturedItems<T extends { isFeatured?: boolean }>(
+  items: T[]
+): T[] {
+  return items.filter((item) => item.isFeatured === true)
+}
+
+/**
+ * Check if an event/promotion is still active
+ */
+export function isActive(validTo: string): boolean {
+  return new Date(validTo) >= new Date()
+}
+
+/**
+ * Check if a date is today
+ */
+export function isToday(dateStr: string): boolean {
+  const today = new Date()
+  const date = new Date(dateStr)
+  return (
+    date.getFullYear() === today.getFullYear() &&
+    date.getMonth() === today.getMonth() &&
+    date.getDate() === today.getDate()
+  )
+}
+
+/**
+ * Get a relative time label like "Today", "This Weekend", "Upcoming"
+ */
+export function getEventTimeLabel(dateStr: string): string {
+  if (isToday(dateStr)) return 'Happening Today'
+  const date = new Date(dateStr)
+  const now = new Date()
+  const diffDays = Math.ceil(
+    (date.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+  )
+  if (diffDays <= 0) return 'Happening Now'
+  if (diffDays === 1) return 'Tomorrow'
+  if (diffDays <= 7) return 'This Week'
+  if (diffDays <= 14) return 'This Weekend'
+  return 'Upcoming'
+}
+
+
+Task A.13 — Populate lib/seo.ts
+File: banex-mall/lib/seo.ts
+
+import type { Metadata } from 'next'
+import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from './constants'
+
+interface PageSEOProps {
+  title: string
+  description: string
+  path: string
+  image?: string
+  noIndex?: boolean
+}
+
+export function generatePageMetadata({
+  title,
+  description,
+  path,
+  image = '/images/hero/mall-exterior-01.jpg',
+  noIndex = false,
+}: PageSEOProps): Metadata {
+  const fullTitle = `${title} | ${SITE_NAME}`
+  const url = `${SITE_URL}${path}`
+  const ogImage = `${SITE_URL}${image}`
+
+  return {
+    title: fullTitle,
+    description,
+    metadataBase: new URL(SITE_URL),
+    alternates: { canonical: url },
+    robots: noIndex
+      ? { index: false, follow: false }
+      : { index: true, follow: true },
+    openGraph: {
+      title: fullTitle,
+      description,
+      url,
+      siteName: SITE_NAME,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+      type: 'website',
+      locale: 'en_NG',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: fullTitle,
+      description,
+      images: [ogImage],
+    },
+  }
+}
+
+// Page-specific metadata factories
+export const homepageMetadata = generatePageMetadata({
+  title: "Lagos' Premier Shopping Destination",
+  description: SITE_DESCRIPTION,
+  path: '/',
+})
+
+export const storesMetadata = generatePageMetadata({
+  title: 'Explore Our Stores',
+  description:
+    'Find your favourite brands, discover new experiences, and navigate Banex Mall with ease. Fashion, electronics, beauty, and more.',
+  path: '/stores',
+  image: '/images/stores/store-interior-01.jpg',
+})
+
+export const diningMetadata = generatePageMetadata({
+  title: 'Eat, Relax & Have Fun',
+  description:
+    'Great food, memorable moments, and experiences for every mood. From quick bites to sit-down dining at Banex Mall, Lekki.',
+  path: '/dining',
+  image: '/images/dining/dining-area-01.jpg',
+})
+
+export const eventsMetadata = generatePageMetadata({
+  title: "What's Happening at Banex",
+  description:
+    'Live events, flash sales, weekend family experiences, and seasonal moments worth showing up for. Banex Mall, Lekki Phase 1.',
+  path: '/events',
+  image: '/images/events/event-01.jpg',
+})
+
+export const leasingMetadata = generatePageMetadata({
+  title: 'Grow Your Brand at Banex Mall',
+  description:
+    "Join one of Lekki's most visible lifestyle destinations. Leasing opportunities available now at Banex Mall, Lagos.",
+  path: '/leasing',
+})
+
+export const contactMetadata = generatePageMetadata({
+  title: "We'd Love to Help You Plan Your Visit",
+  description:
+    'Need directions, leasing information, event support, or store help? Reach out to Banex Mall, Lekki Phase 1.',
+  path: '/contact',
+})
+
+export const luxuryMetadata = generatePageMetadata({
+  title: 'Luxury Experience at Banex',
+  description:
+    'Discover premium retail, fine dining, and curated luxury experiences at Banex Mall, the premier lifestyle destination in Lekki.',
+  path: '/luxury',
+})
+
+export const familyMetadata = generatePageMetadata({
+  title: 'Family & Kids Experiences',
+  description:
+    'Play zones, safe family spaces, birthday-ready experiences, and activities for all ages at Banex Mall, Lekki.',
+  path: '/family',
+})
+
+
+Task A.14 — Populate lib/analytics.ts
+File: banex-mall/lib/analytics.ts
+
+import { GA_MEASUREMENT_ID } from './constants'
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+  }
+}
+
+/**
+ * Base GA4 event tracker
+ */
+function trackEvent(
+  eventName: string,
+  parameters: Record<string, string | number | boolean>
+): void {
+  if (typeof window === 'undefined' || !window.gtag) return
+  window.gtag('event', eventName, {
+    ...parameters,
+    send_to: GA_MEASUREMENT_ID,
+  })
+}
+
+/**
+ * Track when a user views a store page or card
+ */
+export function trackStoreView(storeId: string, storeName: string): void {
+  trackEvent('store_view', {
+    store_id: storeId,
+    store_name: storeName,
+    content_type: 'store',
+  })
+}
+
+/**
+ * Track when a user interacts with an event listing
+ */
+export function trackEventInterest(
+  eventId: string,
+  eventName: string
+): void {
+  trackEvent('event_interest', {
+    event_id: eventId,
+    event_name: eventName,
+    content_type: 'event',
+  })
+}
+
+/**
+ * Track when a user submits or clicks the leasing inquiry CTA
+ */
+export function trackLeasingInquiry(source: string): void {
+  trackEvent('leasing_inquiry', {
+    source,
+    content_type: 'leasing',
+  })
+}
+
+/**
+ * Track WhatsApp CTA clicks
+ */
+export function trackWhatsAppClick(context: string): void {
+  trackEvent('whatsapp_click', {
+    context,
+    content_type: 'cta',
+  })
+}
+
+/**
+ * Track search interactions
+ */
+export function trackSearch(searchTerm: string, resultCount: number): void {
+  trackEvent('search', {
+    search_term: searchTerm,
+    result_count: resultCount,
+  })
+}
+
+/**
+ * Track Get Directions click
+ */
+export function trackGetDirections(source: string): void {
+  trackEvent('get_directions', {
+    source,
+    content_type: 'navigation',
+  })
+}
+
+/**
+ * Track promotion engagement
+ */
+export function trackPromotionEngagement(
+  promotionId: string,
+  promotionName: string
+): void {
+  trackEvent('promotion_engagement', {
+    promotion_id: promotionId,
+    promotion_name: promotionName,
+    content_type: 'promotion',
+  })
+}
+
+
+Task A.15 — Write app/globals.css
+Before writing globals.css, also create banex-mall/app/layout.tsx if it does not exist (required by Next.js App Router):
+
+File: banex-mall/app/layout.tsx
+
+import type { Metadata } from 'next'
+import { Playfair_Display, Inter, Cormorant_Garamond } from 'next/font/google'
+import './globals.css'
+import '@/styles/animations.css'
+import '@/styles/utilities.css'
+
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-heading',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap',
+})
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ['latin'],
+  variable: '--font-accent',
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
+})
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Banex Mall — Lagos\' Premier Shopping Destination',
+    template: '%s | Banex Mall',
+  },
+  description:
+    'From shopping and dining to family fun, events, cinema, and workspaces — Banex Mall brings Lekki\'s best experiences together in one vibrant destination.',
+  icons: {
+    icon: '/icons/favicon-32x32.png',
+    apple: '/icons/apple-touch-icon.png',
+  },
+  manifest: '/manifest.json',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html
+      lang="en"
+      className={`${playfairDisplay.variable} ${inter.variable} ${cormorantGaramond.variable}`}
+    >
+      <body className="bg-surface font-body text-on-surface overflow-x-hidden antialiased">
+        {children}
+      </body>
+    </html>
+  )
+}
+
+
+File: banex-mall/app/globals.css
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #2E3192;
+    --color-accent: #F7941D;
+    --color-gold: #C9A84C;
+    --font-heading: var(--font-heading, 'Playfair Display', Georgia, serif);
+    --font-body: var(--font-body, 'Inter', system-ui, sans-serif);
+    --font-accent: var(--font-accent, 'Cormorant Garamond', Georgia, serif);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+
+  /* Hide scrollbar on carousel containers */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Section container */
+  .site-container {
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  @media (max-width: 768px) {
+    .site-container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .site-container {
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
+  }
+}
+
+@layer components {
+  /* Primary CTA button */
+  .btn-primary {
+    @apply bg-accent text-white font-body font-semibold px-8 py-4 rounded-full
+           hover:bg-accent-dark hover:scale-105 active:scale-95
+           transition-all duration-300 shadow-lg shadow-accent/20
+           focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2;
+  }
+
+  /* Secondary CTA button */
+  .btn-secondary {
+    @apply bg-transparent text-primary border-2 border-primary font-body font-semibold
+           px-8 py-4 rounded-full hover:bg-primary hover:text-white
+           transition-all duration-300
+
+
+
+
+---
+
+## Plan Summary — Banex Mall Platform Build
+
+### Architecture at a Glance
+
+```mermaid
+flowchart TD
+    A[Phase A: Foundation] --> B[Phase B: Shared Components + Layout]
+    B --> C[Phase C: Homepage]
+    C --> D[Phase D: Stores Page]
+    C --> E[Phase E: Dining Page]
+    C --> F[Phase F: Events Page]
+    C --> G[Phase G: Leasing + Contact]
+    C --> H[Phase H: Luxury + Family]
+    G --> I[Phase I: Polish + Audit]
+    H --> I
+    D --> I
+    E --> I
+    F --> I
+```
+
+---
+
+### Phase Breakdown
+
+| Phase | Focus | Key Outputs |
+|---|---|---|
+| **A** | Foundation | deps installed, design tokens, types, lib utils, layout.tsx, globals.css, content expanded |
+| **B** | Shared UI + Navigation | Button, Badge, SectionHeader, CategoryFilter, FadeInUp, NavBar, Header, Footer, PageWrapper |
+| **C** | Homepage | HeroSection, ExperienceTiles, FeaturedStores, PromoBanner, EventsPreview, DiningTeaser, LuxuryTeaser, FamilyTeaser, `app/page.tsx` |
+| **D** | Stores Page | StoreCard, StoreGrid, `app/stores/page.tsx` |
+| **E** | Dining Page | DiningCard, DiningGrid, `app/dining/page.tsx` |
+| **F** | Events Page | EventCard, EventsGrid, `app/events/page.tsx` |
+| **G** | Leasing + Contact | LeasingBenefits, AvailableSpaces, MallMap, `app/leasing/page.tsx`, `app/contact/page.tsx` |
+| **H** | Luxury + Family | `app/luxury/page.tsx`, `app/family/page.tsx` |
+| **I** | Polish + Audit | prompt docs, Lighthouse audit, final memory update |
+
+---
+
+
+.** [`CLINE_MEMORY.md`](CLINE_MEMORY.md) handles *session state and log*. [`CLINE_RULES.md`](CLINE_RULES.md) handles *agent behaviour*. A third file — **`CLINE_INDEX.md`** — would handle *file registry with status*, giving any new agent instant orientation without scanning. It would contain:
+
+- Every file path in `banex-mall/`
+- Its current status: `empty` | `stub` | `complete`
+- One-line description of its responsibility
+- Last-modified session timestamp
+
+pls create and update it
+
+✅ Phase A: Foundation (A.1–A.24) — COMPLETE
+
+moving fowarf we will continue the build phases in different chat session to save on token that means we must have a compreshenive sturtutre. 
+
+pls go ahead and draf a plan on how did would work 

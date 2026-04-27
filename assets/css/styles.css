@@ -165,8 +165,34 @@ p {
   object-fit: cover;
   object-position: center;
   image-rendering: -webkit-optimize-contrast;
+  transform: scale(1.08);
+}
+
+.hero__background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('../images/IMG_1595.jpeg');
+  background-size: cover;
+  background-position: center;
   filter: blur(3px);
   transform: scale(1.08);
+  z-index: 0;
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 20%,
+    black 80%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 20%,
+    black 80%,
+    transparent 100%
+  );
 }
 
 @keyframes slowZoom {
