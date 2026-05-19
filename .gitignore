@@ -1,0 +1,20 @@
+# Bot configuration files (not deployed to git)
+AGENT-MANIFEST.md
+STATE.md
+.roo/
+
+# Workspace documentation (not part of site)
+plans/
+Artvendoor - Brand Guidelines.pdf
+image.png
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Archives (test files and artifacts)
+archives/
+*.png
+*.jpg
+*.jpeg
+!assets/images/
