@@ -239,8 +239,8 @@ function initSmoothScroll() {
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize countdown timer
-  // Launch date: May 30, 2026 (extended by 15 days)
-  const launchDate = '2026-05-30T00:00:00';
+  // Launch date: June 20, 2026
+  const launchDate = '2026-06-20T00:00:00';
   
   const countdownElements = {
     days: document.getElementById('countdown-days'),
